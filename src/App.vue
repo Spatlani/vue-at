@@ -5,7 +5,7 @@
       <!-- <template slot="item" scope="s">
         <span v-text="s.item"></span>
       </template> -->
-      
+
       <!-- custom: with avatars -->
       <template slot="item" scope="s">
         <img :src="s.item.avatar">
@@ -24,7 +24,7 @@
         <span v-text="s.item.name"></span>
       </template>
 
-      <textarea class="editor"
+      <textarea class="editor" v-mask-input
         v-text="text"></textarea>
     </at-ta>
   </div>
