@@ -32,11 +32,15 @@ export default {
         const { at, index } = getAtAndIndex(text, atItems)
         if (index > -1) {
           const rawChunk = text.slice(index + at.length)
-          const chunk = rawChunk.split(':');
-          const has = members.some(v => {
-            const name = itemName(v)
-            return deleteMatch(name.trim(), chunk[0].trim(), '')
-          })
+          const checkRegx = rawChunk.match(/[\s\w]+:[0-9a-z-]+/gi)
+          const chunk = rawChunk.split(':')
+          let has = false;
+          if (checkRegx && checkRegx[0].length === rawChunk.length) {
+            has = members.some(v => {
+              const name = itemName(v)
+              return deleteMatch(name.trim(), chunk[0].trim(), '')
+            })
+          }
           if (has) {
             el.value = el.value.slice(0, index) +
               el.value.slice(el.selectionEnd - 1)
