@@ -16,8 +16,9 @@
         contenteditable
         v-html="html"></div>
     </at>
-
-    <at-ta :members="members" name-key="name">
+    {{atList}}
+    <button type="button" @click="atList = []" name="button"></button>
+    <at-ta :members="members" name-key="name" :selected="atList">
       <!-- custom: with avatars -->
       <template slot="item" scope="s">
         <img :src="s.item.avatar">
@@ -60,6 +61,7 @@ export default {
   name: 'app',
   data () {
     return {
+      atList: [],
       members,
       text: `
 <<< Textarea >>>
