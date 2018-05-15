@@ -31,23 +31,17 @@ export default {
         const { atItems, members, suffix, deleteMatch, itemName } = this
         const { at, index } = getAtAndIndex(text, atItems)
         if (index > -1) {
-          const rawChunk = text.slice(index + at.length)
-          const checkRegx = rawChunk.match(/[\s\w]+:[0-9a-z-]+/gi)
-          const chunk = rawChunk.split(':')
-          let has = false;
-          if (checkRegx && checkRegx[0].length === rawChunk.length) {
-            has = members.some(v => {
-              const name = itemName(v)
-              return deleteMatch(name.trim(), chunk[0].trim(), '')
-            })
-          }
+          const chunk = text.slice(index + at.length)
+          const has = members.some(v => {
+            const name = itemName(v)
+            return deleteMatch(name, chunk, suffix)
+          })
           if (has) {
             el.value = el.value.slice(0, index) +
               el.value.slice(el.selectionEnd - 1)
             el.selectionStart = index + 1
             el.selectionEnd = index + 1
             this.handleInput()
-            this.removeSelected(chunk[1])
           }
         }
       }
@@ -117,33 +111,13 @@ export default {
       }
     },
 
-    // Add to the selected list
-    addToSelected (item, index) {
-      const { members, selected } = this
-      const exist = selected.some(m => m.index === index)
-      if (!exist) {
-        item.index = index;
-        selected.push(item)
-      }
-    },
-
-    // Add to the selected list
-    removeSelected (index) {
-      const { members, selected } = this
-      const exist = selected.some(m => m.index === parseInt(index, 10))
-      if (exist) {
-        selected.splice(index, 1)
-      }
-    },
     // todo: 抽离成库并测试
-    insertText (text, ta, index) {
+    insertText (text, ta) {
       const start = ta.selectionStart
       const end = ta.selectionEnd
       ta.value = ta.value.slice(0, start) +
-        // text + ta.value.slice(end)
-        text.trim() + ':' + index + ta.value.slice(end)
-      // const newEnd = start + text.length
-      const newEnd = start + text.length + (index.toString().length)
+        text + ta.value.slice(end)
+      const newEnd = start + text.length
       ta.selectionStart = newEnd
       ta.selectionEnd = newEnd
     },
@@ -157,8 +131,7 @@ export default {
       el.selectionStart = start
       el.focus() // textarea必须focus回来
       const t = itemName(list[cur]) + suffix
-      this.insertText(t, el, cur)
-      this.addToSelected(list[cur], cur)
+      this.insertText(t, el)
       this.handleInput()
     }
   }

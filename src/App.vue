@@ -5,7 +5,7 @@
       <!-- <template slot="item" scope="s">
         <span v-text="s.item"></span>
       </template> -->
-
+      
       <!-- custom: with avatars -->
       <template slot="item" scope="s">
         <img :src="s.item.avatar">
@@ -16,16 +16,15 @@
         contenteditable
         v-html="html"></div>
     </at>
-    {{atList}}
-    <button type="button" @click="atList = []" name="button"></button>
-    <at-ta :members="members" name-key="name" :selected="atList">
+
+    <at-ta :members="members" name-key="name">
       <!-- custom: with avatars -->
       <template slot="item" scope="s">
         <img :src="s.item.avatar">
         <span v-text="s.item.name"></span>
       </template>
 
-      <textarea class="editor" v-mask-input
+      <textarea class="editor"
         v-text="text"></textarea>
     </at-ta>
   </div>
@@ -61,7 +60,6 @@ export default {
   name: 'app',
   data () {
     return {
-      atList: [],
       members,
       text: `
 <<< Textarea >>>

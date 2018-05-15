@@ -42,10 +42,6 @@ export default {
       type: Array,
       default: () => []
     },
-    selected: {
-      type: Array,
-      default: () => []
-    },
     nameKey: {
       type: String,
       default: ''
@@ -80,7 +76,7 @@ export default {
     atItems () {
       return this.at ? [this.at] : this.ats
     },
-
+    
     style () {
       if (this.atwho) {
         const { list, cur, x, y } = this.atwho
@@ -141,7 +137,6 @@ export default {
             return deleteMatch(name, chunk, suffix)
           })
           if (has) {
-
             e.preventDefault()
             e.stopPropagation()
             const r = getRange()
@@ -205,10 +200,10 @@ export default {
       const range = getPrecedingRange()
       if (range) {
         const { atItems, avoidEmail, allowSpaces } = this
-
+        
         let show = true
         const text = range.toString()
-
+  
         const { at, index } = getAtAndIndex(text, atItems)
 
         if (index < 0) show = false
@@ -225,7 +220,7 @@ export default {
         if (!allowSpaces && /\s/.test(chunk)) {
           show = false
         }
-
+      
         // chunk以空白字符开头不匹配 避免`@ `也匹配
         if (/^\s/.test(chunk)) show = false
 
@@ -322,7 +317,7 @@ export default {
     },
     insertItem () {
       const { range, offset, list, cur } = this.atwho
-      const { suffix, atItems, itemName, selected } = this
+      const { suffix, atItems, itemName } = this
       const r = range.cloneRange()
       const text = range.toString()
       const { at, index } = getAtAndIndex(text, atItems)
